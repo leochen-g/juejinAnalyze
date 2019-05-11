@@ -1,0 +1,258 @@
+html,
+body,
+header,
+section,
+article,
+footer,
+nav,
+button,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+input,
+blockquote,
+textarea,
+p,
+tr,
+th,
+td,
+object,
+table,
+figure,
+figcaption
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+    font-size: 100%;
+    height: 100%;
+    color: #fff;
+}
+.main{
+    background: url("../img/background.png") no-repeat scroll;
+    width: 1366px;
+    height: 768px;
+    overflow: hidden;
+    position: relative;
+    transform-origin: top left;
+    background-size: 100% 100%;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+.header-img{
+    margin-top: 10px;
+}
+.title{
+    background: url("../img/title-background.png") no-repeat scroll;
+    width: 542px;
+    height: 78px;
+    line-height: 57px;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    left: 413px;
+    display: flex;
+    justify-content: center;
+}
+.header-time{
+    font-size: 16px;
+    position: absolute;
+    left: 263px;
+    top: 33px;
+}
+.user-avatar{
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.user-avatar img{
+    width: 28px;
+    height: 28px;
+    border-radius: 28px;
+}
+.user-title{
+    font-size: 23px;
+}
+.content{
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 56px 0  93px;
+}
+.left{
+    width: 265px;
+}
+.user-info{
+    position: relative;
+    border: 1px solid #4574d6;
+    box-shadow: inset 0 0 60px 0 rgba(1, 9, 96, 0.5);
+    width: 265px;
+    height: 296px;
+    padding: 16px 20px;
+    margin-bottom: 22px;
+}
+.user-info-title{
+    text-align: center;
+    font-size: 16px;
+    color: #6bdcff;
+    margin-bottom: 15px;
+}
+.angle{
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #00fcf9;
+}
+.angle-left-top{
+    left: -1px;
+    top: -1px;
+    border-right: none;
+    border-bottom: none;
+}
+.angle-right-top{
+    right: -1px;
+    top: -1px;
+    border-left: none;
+    border-bottom: none;
+}
+.angle-right-bottom{
+    right: -1px;
+    bottom: -1px;
+    border-left: none;
+    border-top: none;
+}
+.angle-left-bottom{
+    left: -1px;
+    bottom: -1px;
+    border-right: none;
+    border-top: none;
+}
+.center{
+    width: 530px;
+}
+.right{
+    width: 340px;
+}
+.user-info-key{
+    width: 97px;
+    height: 19px;
+    border: 1px solid #2c5987;
+    margin-right: 6px;
+    text-align: right;
+    font-size: 12px;
+    padding: 0 16px;
+}
+.user-info-value{
+    width: 125px;
+    height: 19px;
+    border: 1px solid #2c5987;
+    text-align: left;
+    font-size: 12px;
+    padding: 0 14px;
+}
+.user-charm{
+    position: relative;
+    border: 1px solid #4574d6;
+    box-shadow: inset 0 0 60px 0 rgba(1, 9, 96, 0.5);
+    width: 265px;
+    padding: 22px 20px;
+    margin-bottom: 29px;
+}
+.user-charm-item {
+    border: solid 1px #ffae01;
+    margin-bottom: 17px;
+    width: 213px;
+    height: 33px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    line-height: 33px;
+}
+.user-charm-item:last-child{
+    margin-bottom: 0;
+}
+.user-charm-title{
+    height: 12px;
+    font-size: 12px;
+}
+.jue-power{
+    font-size: 16px;
+    color: #ffa201;
+}
+.user-contribution{
+    width: 265px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.user-contribution-circle{
+    background-image: url("../img/contribution.png");
+    background-size: 100% 100%;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    border-radius: 90px;
+    text-align: center;
+    padding-top: 9px;
+    -webkit-transform: rotate(360deg);
+    animation: rotation 8s linear infinite;
+    -moz-animation: rotation 8s linear infinite;
+    -webkit-animation: rotation 8s linear infinite;
+    -o-animation: rotation 8s linear infinite;
+    position: relative;
+}
+
+.user-contribution-item{
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+    text-align: center;
+    line-height: 80px;
+    font-size: 26px;
+    margin-left: 5px;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    z-index: 2;
+}
+.user-contribution-bottom{
+    margin-top: 10px;
+    width: 90px;
+    text-align: center;
+    font-size: 14px;
+    color: #6bdcff;
+}
+.footer{
+    background: url("../img/footer.png") no-repeat scroll;
+    background-size: 100% 100%;
+    width: 1366px;
+    height: 176px;
+    position: absolute;
+    bottom: 0;
+    opacity: 0.59;
+}
