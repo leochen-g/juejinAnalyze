@@ -1,11 +1,16 @@
 const Koa = require("koa")
 const Router = require("koa-router")
+const path = require('path')
 const bodyParser = require('koa-bodyparser')
+const koaStatic = require('koa-static')
 const ctrl = require("../controller/index")
 const app = new Koa()
 const router = new Router()
+const publicPath = '../public'
 app.use(bodyParser())
-
+app.use(koaStatic(
+	path.join(__dirname, publicPath)
+))
 router.post('/api/getUserFlower', async(ctx, next) => { // 爬取并写入关注者信息
 	let body = ctx.request.body;
 	let res = await ctrl.spiderFlowerList(body);
@@ -29,16 +34,9 @@ router.post('/api/getCurrentUserInfo', async(ctx, next) => { // 获取当前用�
 	ctx.body = { code: 200, msg: "ok", data: res }
 	next()
 })
-router.post('/api/getFollowerAnalyzeData', async(ctx, next) => { // 获取你的关注者分析数据
+router.post('/api/getAnalyzeData', async(ctx, next) => { // 获取你的关注者分析数据
 	let body = ctx.request.body;
-	let res = await ctrl.getFollowerAnalyzeData(body)
-	ctx.response.status = 200;
-	ctx.body = { code: 200, msg: "ok", data: res }
-	next()
-})
-router.post('/api/getFolloweesAnalyzeData', async(ctx, next) => { // 获取你关注用户的分析数据
-	let body = ctx.request.body;
-	let res = await ctrl.getFolloweesAnalyzeData(body)
+	let res = await ctrl.getAnalyze(body)
 	ctx.response.status = 200;
 	ctx.body = { code: 200, msg: "ok", data: res }
 	next()

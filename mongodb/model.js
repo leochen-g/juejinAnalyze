@@ -2,7 +2,7 @@ const JueJinUser = require('./schema')
 
 module.exports = {
 	user: {
-		insert: (conditions) => { // 添加新用户信息,存在即
+		insert: (conditions) => { // 添加新用户信息
 			return new Promise((resolve, reject) => {
 				JueJinUser.updateOne({"uid": conditions.uid}, conditions, {"upsert": true}, (err, doc) => {
 					if (err) return reject(err)
@@ -27,63 +27,6 @@ module.exports = {
 					return resolve(doc)
 				})
 			})
-		},
-		getArticleTop: (conditions) => { // 获取你关注用户发布文章最多的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({follower: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({postedPostsCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getJuejinPowerTop: (conditions) => { // 获取你关注用户掘力值最大的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({follower: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({juejinPower: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getTotalCollectionsCountTop: (conditions) => { // 获取你关注用户点赞量最多的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({follower: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({totalCollectionsCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getTotalViewsCountTop: (conditions) => { // 获取你关注用户阅读量最多的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({follower: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({totalViewsCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getFollowersCountTop: (conditions) => { // 获取你关注用户 关注者最多的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({follower: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({followersCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getLevelDistribution: (conditions) => { // 获取你关注用户等级分布
-			return new Promise((resolve, reject) => {
-				JueJinUser.aggregate([
-					{
-						$match: {
-							follower: {$elemMatch: {$eq: conditions.uid}}
-						}
-					},
-					{
-						$group: {_id: '$level', total: {$sum: 1}}
-					}
-				]).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
 		}
 	},
 	follower: {
@@ -94,60 +37,45 @@ module.exports = {
 					return resolve(doc)
 				})
 			})
-		},
-		getArticleTop: (conditions) => { // 获取发布文章最多的前10用户
+		}
+	},
+	analyze:{
+		getTopUser: (conditions, param) => { // 获取各项指标前10用户
 			return new Promise((resolve, reject) => {
-				JueJinUser.find({followees: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({postedPostsCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					console.log(doc)
-					return resolve(doc)
-				})
-			})
-		},
-		getJuejinPowerTop: (conditions) => { // 获取掘力值最大的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({followees: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({juejinPower: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getTotalCollectionsCountTop: (conditions) => { // 获取点赞量最多的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({followees: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({totalCollectionsCount: '-1'}).limit(conditions.top).exec((err, doc) => {
+				let findOption = {}
+				let sort = {}
+				if(conditions.type === 'follower'){
+					findOption = {followees: {$elemMatch: {$eq: conditions.uid}}}
+				}else if(conditions.type === 'followees'){
+					findOption = {follower: {$elemMatch: {$eq: conditions.uid}}}
+				}
+				sort[param] = '-1'
+				JueJinUser.find(findOption).select('-followees -follower').sort(sort).limit(conditions.top).exec((err, doc) => {
 					if (err) return reject(err)
 					return resolve(doc)
 				})
 			})
 		},
-		getTotalViewsCountTop: (conditions) => { // 获取阅读量最多的前10用户
+		getLevelDistribution: (conditions) => { // 获取等级分布
 			return new Promise((resolve, reject) => {
-				JueJinUser.find({followees: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({totalViewsCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getFollowersCountTop: (conditions) => { // 获取关注者最多的前10用户
-			return new Promise((resolve, reject) => {
-				JueJinUser.find({followees: {$elemMatch: {$eq: conditions.uid}}}).select('-followees -follower').sort({followersCount: '-1'}).limit(conditions.top).exec((err, doc) => {
-					if (err) return reject(err)
-					return resolve(doc)
-				})
-			})
-		},
-		getLevelDistribution: (conditions) => {
-			return new Promise((resolve, reject) => {
+				let match = {}
+				if(conditions.type==='follower'){
+					match = {
+						followees: {$elemMatch: {$eq: conditions.uid}}
+					}
+				}else if(conditions.type==='followees'){
+					match = {
+						follower: {$elemMatch: {$eq: conditions.uid}}
+					}
+				}
 				JueJinUser.aggregate([
 					{
-						$match: {
-							followees: {$elemMatch: {$eq: conditions.uid}}
-						}
+						$match: match
 					},
 					{
 						$group: {_id: '$level', total: {$sum: 1}}
 					}
-				]).exec((err, doc) => {
+				]).sort({'total': -1}).exec((err, doc) => {
 					if (err) return reject(err)
 					return resolve(doc)
 				})

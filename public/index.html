@@ -6,92 +6,173 @@
     <title>个人掘金粉丝及关注者数据分析</title>
     <link rel="stylesheet" href="./css/index.css">
 </head>
-<body>
-<div class="main">
-    <header>
-        <div class="header">
-            <img class="header-img" src="./img/left-header.png" alt="">
-            <div class="header-time">加入掘金<span style="color: #ffa201">100</span>天</div>
-            <div class="title">
-                <div class="user-avatar"><img src="./img/ava.jpg" alt=""></div>
-                <div class="user-title">张三的粉丝</div>
+<body style="overflow: hidden">
+<div id="main" >
+    <!--登录页面-->
+    <div v-show="!hasAuth" class="login">
+        <div class="login-form">
+            <!--四角阴影-->
+            <div style="border-color: #3381ff" class="angle angle-left-top"></div>
+            <div style="border-color: #3381ff" class="angle angle-right-top"></div>
+            <div style="border-color: #3381ff" class="angle angle-right-bottom"></div>
+            <div style="border-color: #3381ff" class="angle angle-left-bottom"></div>
+            <div class="login-item">
+                <label for=""><span>uid</span><input v-model="uid" class="login-input" type="text"></label>
             </div>
-            <img class="header-img" src="./img/right-header.png" alt="">
-        </div>
-    </header>
-    <div class="content">
-        <div class="left">
-            <div class="user-info">
-                <!--四角阴影-->
-                <div class="angle angle-left-top"></div>
-                <div class="angle angle-right-top"></div>
-                <div class="angle angle-right-bottom"></div>
-                <div class="angle angle-left-bottom"></div>
-                <div class="user-info-title" style="text-align: center;">个人成就</div>
-                <table>
-                    <tr>
-                        <td class="user-info-key">昵称:</td>
-                        <td class="user-info-value">张三</td>
-                    </tr>
-                    <tr>
-                        <td class="user-info-key">职位:</td>
-                        <td class="user-info-value">前端工程师</td>
-                    </tr>
-                </table>
+            <div class="login-item">
+                <label for=""><span>token</span><input v-model="token" class="login-input" type="text"></label>
             </div>
-            <div class="user-charm">
-                <!--四角阴影-->
-                <div class="angle angle-left-top"></div>
-                <div class="angle angle-right-top"></div>
-                <div class="angle angle-right-bottom"></div>
-                <div class="angle angle-left-bottom"></div>
-                <div class="user-charm-item">
-                    <div class="user-charm-title">掘力值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6bdcff">|</span></div>
-                    <div class="jue-power">2443</div>
-                </div>
-                <div class="user-charm-item">
-                    <div class="user-charm-title">粉丝数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6bdcff">|</span></div>
-                    <div class="jue-power">2443</div>
-                </div>
+            <div class="login-btn">
+                <button @click="spiderFollower('follower')">粉丝数据分析</button>
+                <button @click="spiderFollower('followees')">已关注用户分析</button>
             </div>
-            <div class="user-contribution">
-                <div style="position: relative;z-index: 2">
-                    <div class="user-contribution-circle">
-                    </div>
-                    <div class="user-contribution-item">
-                        10
-                    </div>
-                    <div class="user-contribution-bottom">发布文章</div>
-                </div>
-                <div style="position: relative;z-index: 2;">
-                    <div class="user-contribution-circle">
-                    </div>
-                    <div class="user-contribution-item">
-                        20
-                    </div>
-                    <div class="user-contribution-bottom">发布沸点</div>
-                </div>
-            </div>
-        </div>
-        <div class="center">
-            <div class="user-img">
-
-            </div>
-        </div>
-        <div class="right">
-            <div class="user-top"></div>
         </div>
     </div>
-    <div class="footer"></div>
+    <div v-show="loading" class="loading">
+        <img src="./img/loading.gif" alt="">
+        <div>数据正在分析中...</div>
+    </div>
+    <div v-show="hasAuth" class="main"  ref="main" :style="{transform: transForm}">
+        <header>
+            <div class="header">
+                <img class="header-img" src="./img/left-header.png" alt="">
+                <div class="header-time">加入掘金<span style="color: #ffa201">{{userInfo.joinDay }}</span>天</div>
+                <div class="title">
+                    <div class="user-avatar"><img :src="userInfo.avatarLarge" alt=""></div>
+                    <div class="user-title">{{userInfo.username}}掘金粉丝多维度数据分析</div>
+                </div>
+                <img class="header-img" src="./img/right-header.png" alt="">
+            </div>
+        </header>
+        <div class="content">
+            <div class="left">
+                <div class="user-info">
+                    <!--四角阴影-->
+                    <div class="angle angle-left-top"></div>
+                    <div class="angle angle-right-top"></div>
+                    <div class="angle angle-right-bottom"></div>
+                    <div class="angle angle-left-bottom"></div>
+                    <div class="user-info-title" style="text-align: center;">个人成就</div>
+                    <table>
+                        <tr>
+                            <td class="user-info-key">昵称:</td>
+                            <td class="user-info-value">{{userInfo.username}}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">职位:</td>
+                            <td class="user-info-value">{{userInfo.jobTitle}}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">获得点赞:</td>
+                            <td class="user-info-value"><span style="color: #ffa201">{{userInfo.totalCollectionsCount}}</span></td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">获得阅读:</td>
+                            <td class="user-info-value"><span style="color: #ffa201">{{userInfo.totalViewsCount}}</span></td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">点赞文章:</td>
+                            <td class="user-info-value">{{userInfo.collectedEntriesCount}}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">点赞沸点:</td>
+                            <td class="user-info-value">{{userInfo.likedPinCount}}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">关注了:</td>
+                            <td class="user-info-value">{{userInfo.followeesCount}}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">关注标签:</td>
+                            <td class="user-info-value">{{userInfo.subscribedTagsCount}}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-key">收藏集:</td>
+                            <td class="user-info-value">{{userInfo.collectionSetCount}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="user-charm">
+                    <!--四角阴影-->
+                    <div class="angle angle-left-top"></div>
+                    <div class="angle angle-right-top"></div>
+                    <div class="angle angle-right-bottom"></div>
+                    <div class="angle angle-left-bottom"></div>
+                    <div class="user-charm-item">
+                        <div class="user-charm-title">掘力值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #6bdcff">|</span></div>
+                        <div class="jue-power">{{userInfo.juejinPower}}</div>
+                    </div>
+                    <div class="user-charm-item">
+                        <div class="user-charm-title">粉丝数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #6bdcff">|</span></div>
+                        <div class="jue-power">{{userInfo.followersCount}}</div>
+                    </div>
+                </div>
+                <div class="user-contribution">
+                    <div style="position: relative;z-index: 2">
+                        <div class="user-contribution-circle">
+                        </div>
+                        <div class="user-contribution-item">
+                            {{userInfo.postedPostsCount}}
+                        </div>
+                        <div class="user-contribution-bottom">发布文章</div>
+                    </div>
+                    <div style="position: relative;z-index: 2;">
+                        <div class="user-contribution-circle">
+                        </div>
+                        <div class="user-contribution-item">
+                            {{userInfo.pinCount}}
+                        </div>
+                        <div class="user-contribution-bottom">发布沸点</div>
+                    </div>
+                </div>
+            </div>
+            <div class="center">
+                <div class="user-img">
+                    <img class="user" src="./img/user.png" alt="">
+                    <span class="user-level-val">LV{{userInfo.level}}</span>
+                    <img class="user-bottom" src="./img/user-bottom.png" alt="">
+                </div>
+            </div>
+            <div class="right">
+                <div class="user-top">
+                    <!--四角阴影-->
+                    <div class="angle angle-left-top"></div>
+                    <div class="angle angle-right-top"></div>
+                    <div class="angle angle-right-bottom"></div>
+                    <div class="angle angle-left-bottom"></div>
+                    <div class="user-top-select">
+                        <label for="">
+                        </label>
+                        <select v-model="selected" name="" id="" @change="changeTop">
+                            <option value="postedPostsCount">发布文章TOP10</option>
+                            <option value="juejinPower">掘力值TOP10</option>
+                            <option value="totalCollectionsCount">粉丝数TOP10</option>
+                            <option value="totalViewsCount">读者点赞TOP10</option>
+                            <option value="followersCount">读者阅读数TOP10</option>
+                        </select>
+                    </div>
+                    <div id="user-top-chart"></div>
+                </div>
+                <div class="user-level">
+                    <!--四角阴影-->
+                    <div class="angle angle-left-top"></div>
+                    <div class="angle angle-right-top"></div>
+                    <div class="angle angle-right-bottom"></div>
+                    <div class="angle angle-left-bottom"></div>
+                    <div class="user-level-title">LV等级占比</div>
+                    <div id="user-level-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
-<script src="js/resize.js" type="text/javascript"></script>
-<script type="text/javascript">
-	$(function () {
-      widthFull([".main"]);
-	})
-</script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./js/index.js" type="text/javascript"></script>
-
 </body>
 </html>

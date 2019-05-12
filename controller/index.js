@@ -137,25 +137,27 @@ async function getFollowee(uid, token, before) {
 	}
 }
 
-
-async function getFollowerTop(uid, top) { // 关注你的用户数据分析
+// 用户数据分析
+// @uid 用户id  @top 可配置选取前多少名  @type 获取数据类型：粉丝 follower 关注的人 followees
+async function getTopData(uid, top, type) {
 	let data = {
 		uid: uid,
-		top: parseInt(top)
+		top: parseInt(top),
+		type: type
 	}
 	try {
-		let article = model.follower.getArticleTop(data)
-		let juejinPower = model.follower.getJuejinPowerTop(data)
-		let liked = model.follower.getTotalCollectionsCountTop(data)
-		let views = model.follower.getTotalViewsCountTop(data)
-		let follower = model.follower.getFollowersCountTop(data)
-		let level = model.follower.getLevelDistribution(data)
+		let article = model.analyze.getTopUser(data,'postedPostsCount')
+		let juejinPower = model.analyze.getTopUser(data,'juejinPower')
+		let liked = model.analyze.getTopUser(data,'totalCollectionsCount')
+		let views = model.analyze.getTopUser(data,'totalViewsCount')
+		let follower = model.analyze.getTopUser(data,'followersCount')
+		let level = model.analyze.getLevelDistribution(data)
 		let obj = {
-			article: await article,
+			postedPostsCount: await article,
 			juejinPower: await juejinPower,
-			liked: await liked,
-			views: await views,
-			follower: await follower,
+			totalCollectionsCount: await liked,
+			totalViewsCount: await views,
+			followersCount: await follower,
 			level: await level
 		}
 		return obj
@@ -165,32 +167,6 @@ async function getFollowerTop(uid, top) { // 关注你的用户数据分析
 	}
 }
 
-async function getFolloweesTop(uid, top) { // 你关注的用户数据分析
-	let data = {
-		uid: uid,
-		top: parseInt(top)
-	}
-	try {
-		let article = model.followees.getArticleTop(data)
-		let juejinPower = model.followees.getJuejinPowerTop(data)
-		let liked = model.followees.getTotalCollectionsCountTop(data)
-		let views = model.followees.getTotalViewsCountTop(data)
-		let follower = model.followees.getFollowersCountTop(data)
-		let level = model.followees.getLevelDistribution(data)
-		let obj = {
-			article: await article,
-			juejinPower: await juejinPower,
-			liked: await liked,
-			views: await views,
-			follower: await follower,
-			level: await level
-		}
-		return obj
-	} catch (err) {
-		console.log('err',err)
-		return err
-	}
-}
 
 module.exports = {
 	spiderFlowerList: async (body) => {  // 获取用户的关注者列表
@@ -215,16 +191,11 @@ module.exports = {
 		let result = await model.user.getUserInfo(data)
 		return result
 	},
-	getFollowerAnalyzeData: async (body) => { // 获取关注者数据分析
+	getAnalyze: async (body) => { // 获取关注者数据分析
 		let uid = body.uid
 		let top = body.top
-		let res = await getFollowerTop(uid, top)
-		return res
-	},
-	getFolloweesAnalyzeData: async (body) => { // 获取你关注用户的数据分析
-		let uid = body.uid
-		let top = body.top
-		let res = await getFolloweesTop(uid, top)
+		let type = body.type
+		let res = await getTopData(uid, top, type)
 		return res
 	}
 }

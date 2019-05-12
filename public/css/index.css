@@ -43,6 +43,76 @@ body
     font-size: 100%;
     height: 100%;
     color: #fff;
+    box-sizing: border-box;
+}
+.login{
+    background: url("../img/login-background.png") no-repeat scroll;
+    height: 768px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-form{
+    width: 670px;
+    height: 320px;
+    position: relative;
+}
+.login-item{
+    width: 476px;
+    margin: 30px auto;
+}
+.login-item span{
+    display: inline-block;
+    font-size: 24px;
+    color: #1c6bfd;
+    width: 100px;
+}
+.login-btn{
+    width: 476px;
+    margin: 30px auto;
+}
+.login-btn button{
+    width: 150px;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #1c6bfd;
+    margin-right: 52px;
+    margin-left: 100px;
+    border: none;
+    cursor: pointer;
+}
+.login-btn button:last-child{
+    margin-right: 0;
+    margin-left: 0
+}
+.login-input{
+    width: 330px;
+    height: 60px;
+    font-size: 20px;
+    background-color: #00071e;
+    border: solid 1px #142766;
+    opacity: 0.7;
+    color: #ffffff;
+    padding: 0 10px;
+}
+.loading{
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 1080px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    text-align: center;
+    padding-top: 20%;
+}
+.loading img{
+    width: 100px;
+    height: 100px;
 }
 .main{
     background: url("../img/background.png") no-repeat scroll;
@@ -102,8 +172,6 @@ body
     position: relative;
     border: 1px solid #4574d6;
     box-shadow: inset 0 0 60px 0 rgba(1, 9, 96, 0.5);
-    width: 265px;
-    height: 296px;
     padding: 16px 20px;
     margin-bottom: 22px;
 }
@@ -154,6 +222,7 @@ body
     height: 19px;
     border: 1px solid #2c5987;
     margin-right: 6px;
+    margin-bottom: 6px;
     text-align: right;
     font-size: 12px;
     padding: 0 16px;
@@ -162,6 +231,7 @@ body
     width: 125px;
     height: 19px;
     border: 1px solid #2c5987;
+    margin-bottom: 6px;
     text-align: left;
     font-size: 12px;
     padding: 0 14px;
@@ -170,14 +240,12 @@ body
     position: relative;
     border: 1px solid #4574d6;
     box-shadow: inset 0 0 60px 0 rgba(1, 9, 96, 0.5);
-    width: 265px;
     padding: 22px 20px;
     margin-bottom: 29px;
 }
 .user-charm-item {
     border: solid 1px #ffae01;
     margin-bottom: 17px;
-    width: 213px;
     height: 33px;
     display: flex;
     justify-content: space-between;
@@ -196,7 +264,6 @@ body
     color: #ffa201;
 }
 .user-contribution{
-    width: 265px;
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
@@ -214,8 +281,7 @@ body
     background-image: url("../img/contribution.png");
     background-size: 100% 100%;
     width: 90px;
-    height: 90px;
-    line-height: 90px;
+    height: 80px;
     border-radius: 90px;
     text-align: center;
     padding-top: 9px;
@@ -236,7 +302,7 @@ body
     font-size: 26px;
     margin-left: 5px;
     position: absolute;
-    top: 10px;
+    top: 4px;
     left: 0;
     z-index: 2;
 }
@@ -255,4 +321,80 @@ body
     position: absolute;
     bottom: 0;
     opacity: 0.59;
+}
+.user-img{
+    background: url("../img/user-background.png") no-repeat scroll;
+    background-size: 617px 439px;
+    background-position: -15px 59px;
+    width: 607px;
+    height: 606px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.user{
+    position: relative;
+    top:15px;
+    z-index: 3;
+}
+.user-bottom{
+    position: relative;
+    z-index: 1;
+    bottom: 155px;
+}
+.user-top{
+    position: relative;
+    border: 1px solid #4574d6;
+    box-shadow: inset 0 0 60px 0 rgba(1, 9, 96, 0.5);
+    padding: 22px 20px;
+    margin-bottom: 29px;
+}
+.user-top-select{
+    width: 225px;
+    margin: 0 auto 15px auto;
+}
+.user-top-select select{
+    width: 100%;
+    height: 33px;
+    padding: 0 14px;
+    font-size: 16px;
+    background-color: #06377a;
+    border: 1px solid  #17509b;
+    color: #6bdcff;
+    border-radius: 0;
+    appearance: none;
+    -webkit-appearance: none;   /*去除chrome浏览器的默认下拉图片*/
+    -moz-appearance: none;  /*去除Firefox浏览器的默认下拉图片*/
+    background: url("../img/pull.svg") no-repeat right center;
+}
+.user-top-select select:focus{
+    outline: none;
+}
+#user-top-chart{
+    height: 240px;
+    width: 300px;
+}
+.user-level{
+    position: relative;
+    z-index: 3;
+    border: 1px solid #4574d6;
+    box-shadow: inset 0 0 60px 0 rgba(1, 9, 96, 0.5);
+    padding: 22px 20px;
+}
+.user-level-title{
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #6bdcff;
+}
+#user-level-chart{
+    height: 129px;
+    width: 300px;
+}
+.user-level-val{
+    position: absolute;
+    color: #032760;
+    top: 169px;
+    right: 270px;
+    z-index: 4;
 }
