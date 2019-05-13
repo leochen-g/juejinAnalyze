@@ -1,6 +1,51 @@
 const JueJinUser = require('./schema')
-
+const JueJinSearch = require('./searchSchema')
 module.exports = {
+	search: { // 用户查询状态
+		findOrInsert: (conditions) => { // 添加新查询用户信息
+			return new Promise((resolve, reject) => {
+				JueJinSearch.findOne({uid: conditions.uid}, (err, doc) => {
+					if (err) return reject(err)
+					if (doc){
+						console.log('doc',doc)
+						return resolve(doc)
+					}else {
+						let data = {
+							uid: conditions.uid,
+							follower: false,
+							followees: false,
+							followerSpider: 'none',
+							followeesSpider: 'none'
+						}
+						JueJinSearch.updateOne({"uid": conditions.uid}, data, {"upsert": true}, async (err, doc) => {
+							if (err) return reject(err)
+							let user = await JueJinSearch.findOne({uid: conditions.uid})
+							return resolve(user)
+						})
+					}
+				})
+			})
+		},
+		update: (conditions) => { // 更新查询的状态
+			return new Promise((resolve, reject) => {
+				let set = {}
+				set[conditions.key] = conditions.value
+				console.log('更新值', set)
+				JueJinSearch.updateOne({uid: conditions.uid}, {'$set': set}, (err, doc) => {
+					if (err) return reject(err)
+					return resolve(doc)
+				})
+			})
+		},
+		getSpiderStatus: (conditions) => {
+			return new Promise((resolve, reject) => {
+				JueJinSearch.findOne({uid: conditions.uid}, (err, doc) => {
+					if (err) return reject(err)
+					return resolve(doc)
+				})
+			})
+		}
+	},
 	user: {
 		insert: (conditions) => { // 添加新用户信息
 			return new Promise((resolve, reject) => {

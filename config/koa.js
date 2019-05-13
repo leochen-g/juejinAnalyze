@@ -27,6 +27,14 @@ router.post('/api/getUserFlowees', async(ctx, next) => { // 爬取并写入关�
 	next()
 })
 
+router.post('/api/getSpiderStatus', async(ctx, next) => { // 获取爬取状态
+	let body = ctx.request.body;
+	let res = await ctrl.spiderStatus(body);
+	ctx.response.status = 200;
+	ctx.body = { code: 200, msg: "ok", data: res.data }
+	next()
+})
+
 router.post('/api/getCurrentUserInfo', async(ctx, next) => { // 获取当前用的基本信息
 	let body = ctx.request.body;
 	let res = await ctrl.getUserInfo(body)
@@ -62,5 +70,6 @@ app.on('error', (err) => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 app.listen(3008, () => {
-	console.log('route-use-middleware is starting at port 3008')
+	console.log('juejinAnalyze is starting at port 3008')
+	console.log('please  Preview at  http://localhost:3008')
 })

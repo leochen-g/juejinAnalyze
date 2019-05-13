@@ -50,12 +50,12 @@ async function spiderUserInfoAndInsert(ids, token, tid, type) {
 		}
 		await model.user.insert(insertData)
 		if (ids !== tid) {
-			if(type === 'followees'){
-				updatefollower(ids,tid) // 更新关注你的用户列表
-				updatefollowees(tid,ids) // 更新你关注用户的列表
-			}else {
-				updatefollower(tid,ids) // 更新关注你的用户列表
-				updatefollowees(ids,tid) // 更新你关注用户的列表
+			if (type === 'followees') {
+				updatefollower(ids, tid) // 更新关注你的用户列表
+				updatefollowees(tid, ids) // 更新你关注用户的列表
+			} else {
+				updatefollower(tid, ids) // 更新关注你的用户列表
+				updatefollowees(ids, tid) // 更新你关注用户的列表
 			}
 		}
 		return 'ok'
@@ -73,6 +73,7 @@ async function updatefollowees(uId, tId) {
 	}
 	model.followees.updatefollowees(data)
 }
+
 // 更新用户的被关注列表
 // @uId 关注的用户id @tId 被关注的用户Id
 async function updatefollower(uId, tId) {
@@ -100,14 +101,29 @@ async function getFollower(uid, token, before) {
 		followList.forEach(async function (item) { // 循环获取关注者的信息
 			await spiderUserInfoAndInsert(item.follower.objectId, token, uid, 'follower')
 		})
-		if (followList.length === 20) {
+		console.log(followList.length)
+		if (followList.length === 20) {  // 获取的数据长度为20继续爬取
 			let lastTime = getLastTime(followList)
+			await updateSpider(uid, 'followerSpider', 'loading') // 更新爬取状态为loading
 			await getFollower(uid, token, lastTime)
+		} else {
+			await updateSpider(uid, 'follower', true) // 设置已经爬取标志
+			await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
 		}
-		return {data: 'loading'}
 	} catch (err) {
 		return {data: err}
 	}
+}
+
+// 更新爬取状态与结果
+// @uid 用户id @key 更新的字段 @value 更新的值
+async function updateSpider(uid, key, value) {
+	let condition = {
+		uid: uid,
+		key: key,
+		value: value
+	}
+	model.search.update(condition)
 }
 
 // 爬取你关注的列表
@@ -129,9 +145,12 @@ async function getFollowee(uid, token, before) {
 		})
 		if (followList.length === 20) {
 			let lastTime = getLastTime(followList)
+			await updateSpider(uid, 'followeesSpider', 'loading') // 更新爬取状态为loading
 			await getFollowee(uid, token, lastTime)
+		} else {
+			await updateSpider(uid, 'followees', true) // 设置已经爬取标志
+			await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
 		}
-		return {data: 'ok'}
 	} catch (err) {
 		return {data: err}
 	}
@@ -146,11 +165,11 @@ async function getTopData(uid, top, type) {
 		type: type
 	}
 	try {
-		let article = model.analyze.getTopUser(data,'postedPostsCount')
-		let juejinPower = model.analyze.getTopUser(data,'juejinPower')
-		let liked = model.analyze.getTopUser(data,'totalCollectionsCount')
-		let views = model.analyze.getTopUser(data,'totalViewsCount')
-		let follower = model.analyze.getTopUser(data,'followersCount')
+		let article = model.analyze.getTopUser(data, 'postedPostsCount')
+		let juejinPower = model.analyze.getTopUser(data, 'juejinPower')
+		let liked = model.analyze.getTopUser(data, 'totalCollectionsCount')
+		let views = model.analyze.getTopUser(data, 'totalViewsCount')
+		let follower = model.analyze.getTopUser(data, 'followersCount')
 		let level = model.analyze.getLevelDistribution(data)
 		let obj = {
 			postedPostsCount: await article,
@@ -162,26 +181,50 @@ async function getTopData(uid, top, type) {
 		}
 		return obj
 	} catch (err) {
-		console.log('err',err)
+		console.log('err', err)
 		return err
 	}
 }
-
 
 module.exports = {
 	spiderFlowerList: async (body) => {  // 获取用户的关注者列表
 		let uid = body.uid
 		let token = body.token
-		spiderUserInfoAndInsert(uid, token, uid) // 把自己的信息也插入mongodb
-		let result = await getFollower(uid, token)
-		return result
+		let searchStatus = await model.search.findOrInsert({uid: uid})
+		console.log(' searchStatus', searchStatus)
+		if (searchStatus.followerSpider == 'success') {
+			return {data: 'success'}
+		} else if (searchStatus.followerSpider == 'loading') {
+			return {data: 'loading'}
+		} else if (searchStatus.followerSpider == 'none') {
+			spiderUserInfoAndInsert(uid, token, uid) // 把自己的信息也插入mongodb
+			getFollower(uid, token)
+			return {data: 'none'}
+		}
 	},
 	spiderFloweesList: async (body) => { // 获取用户的关注列表
 		let uid = body.uid
 		let token = body.token
-		spiderUserInfoAndInsert(uid, token, uid) // 把自己的信息也插入mongodb
-		let result = await getFollowee(uid, token)
-		return result
+		let searchStatus = await model.search.findOrInsert({uid: uid})
+		if (searchStatus.followeesSpider == 'success') {
+			return {data: 'success'}
+		} else if (searchStatus.followeesSpider == 'loading') {
+			return {data: 'loading'}
+		} else if (searchStatus.followeesSpider == 'none') {
+			spiderUserInfoAndInsert(uid, token, uid) // 把自己的信息也插入mongodb
+			getFollowee(uid, token)
+			return {data: 'none'}
+		}
+	},
+	spiderStatus: async (body) => {
+		let uid = body.uid
+		let type = body.type + 'Spider'
+		let spiderStatus = await model.search.getSpiderStatus({uid: uid, type: type})
+		if (spiderStatus[type] === 'loading' || spiderStatus[type] === 'none') {
+			return {data: false}
+		} else if (spiderStatus[type] === 'success') {
+			return {data: true}
+		}
 	},
 	getUserInfo: async (body) => { // 获取当前用户基本信息
 		let uid = body.uid

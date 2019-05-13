@@ -1,14 +1,16 @@
 {
   "name": "juejinanalyze",
   "version": "1.0.0",
-  "description": "",
+  "description": "用户掘金粉丝及关注用户数据多维度分析工具",
+  "keywords": ["koa", "mongodb", "superagent", "mongoose", "掘金", "爬虫", "数据分析"],
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./config/koa.js",
+    "dev": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Leo_chen",
+  "license": "MIT",
   "dependencies": {
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",

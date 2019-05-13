@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>个人掘金粉丝及关注者数据分析</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon16.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon32.ico">
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body style="overflow: hidden">
-<div id="main" >
+<div id="main" ref="main" :style="{transform: transForm}">
+
     <!--登录页面-->
     <div v-show="!hasAuth" class="login">
         <div class="login-form">
@@ -30,16 +33,17 @@
     </div>
     <div v-show="loading" class="loading">
         <img src="./img/loading.gif" alt="">
-        <div>数据正在分析中...</div>
+        <div>{{loadingTips}}</div>
     </div>
-    <div v-show="hasAuth" class="main"  ref="main" :style="{transform: transForm}">
+    <div v-show="hasAuth" class="main">
         <header>
             <div class="header">
                 <img class="header-img" src="./img/left-header.png" alt="">
+                <div class="header-back" @click="backLogin">< 返回重选</div>
                 <div class="header-time">加入掘金<span style="color: #ffa201">{{userInfo.joinDay }}</span>天</div>
                 <div class="title">
                     <div class="user-avatar"><img :src="userInfo.avatarLarge" alt=""></div>
-                    <div class="user-title">{{userInfo.username}}掘金粉丝多维度数据分析</div>
+                    <div class="user-title"><span style="color: #ffa201;font-size: 23px">{{userInfo.username}}</span><span v-if="type==='follower'">掘金粉丝</span><span v-if="type==='followees'">掘金已关注用户</span>多维度数据分析</div>
                 </div>
                 <img class="header-img" src="./img/right-header.png" alt="">
             </div>
@@ -64,11 +68,14 @@
                         </tr>
                         <tr>
                             <td class="user-info-key">获得点赞:</td>
-                            <td class="user-info-value"><span style="color: #ffa201">{{userInfo.totalCollectionsCount}}</span></td>
+                            <td class="user-info-value"><span
+                                    style="color: #ffa201">{{userInfo.totalCollectionsCount}}</span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="user-info-key">获得阅读:</td>
-                            <td class="user-info-value"><span style="color: #ffa201">{{userInfo.totalViewsCount}}</span></td>
+                            <td class="user-info-value"><span
+                                    style="color: #ffa201">{{userInfo.totalViewsCount}}</span></td>
                         </tr>
                         <tr>
                             <td class="user-info-key">点赞文章:</td>
@@ -76,7 +83,7 @@
                         </tr>
                         <tr>
                             <td class="user-info-key">点赞沸点:</td>
-                            <td class="user-info-value">{{userInfo.likedPinCount}}</td>
+                            <td class="user-info-value">{{userInfo.likedPinCount?userInfo.likedPinCount:0}}</td>
                         </tr>
                         <tr>
                             <td class="user-info-key">关注了:</td>
@@ -114,7 +121,7 @@
                         <div class="user-contribution-circle">
                         </div>
                         <div class="user-contribution-item">
-                            {{userInfo.postedPostsCount}}
+                            {{userInfo.postedPostsCount?userInfo.postedPostsCount:0}}
                         </div>
                         <div class="user-contribution-bottom">发布文章</div>
                     </div>
@@ -122,7 +129,7 @@
                         <div class="user-contribution-circle">
                         </div>
                         <div class="user-contribution-item">
-                            {{userInfo.pinCount}}
+                            {{userInfo.pinCount?userInfo.pinCount:0}}
                         </div>
                         <div class="user-contribution-bottom">发布沸点</div>
                     </div>
@@ -148,9 +155,9 @@
                         <select v-model="selected" name="" id="" @change="changeTop">
                             <option value="postedPostsCount">发布文章TOP10</option>
                             <option value="juejinPower">掘力值TOP10</option>
-                            <option value="totalCollectionsCount">粉丝数TOP10</option>
-                            <option value="totalViewsCount">读者点赞TOP10</option>
-                            <option value="followersCount">读者阅读数TOP10</option>
+                            <option value="followersCount">粉丝数TOP10</option>
+                            <option value="totalCollectionsCount">读者点赞TOP10</option>
+                            <option value="totalViewsCount">读者阅读数TOP10</option>
                         </select>
                     </div>
                     <div id="user-top-chart"></div>

@@ -45,9 +45,17 @@ body
     color: #fff;
     box-sizing: border-box;
 }
+#main{
+    width: 1366px;
+    height: 768px;
+    overflow: hidden;
+    position: relative;
+    transform-origin: top left;
+    background-size: 100% 100%;
+}
 .login{
     background: url("../img/login-background.png") no-repeat scroll;
-    height: 768px;
+    height:768px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -142,6 +150,14 @@ body
     display: flex;
     justify-content: center;
 }
+.header-back{
+    font-size: 14px;
+    color: #d6d6d6;
+    position: absolute;
+    left: 20px;
+    top: 33px;
+    cursor: pointer;
+}
 .header-time{
     font-size: 16px;
     position: absolute;
@@ -158,7 +174,7 @@ body
     border-radius: 28px;
 }
 .user-title{
-    font-size: 23px;
+    font-size: 18px;
 }
 .content{
     display: flex;

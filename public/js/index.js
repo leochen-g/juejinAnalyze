@@ -4,8 +4,10 @@ window.onload = function () {
 		data: {
 			hasAuth: false,
 			loading: false,
+			loadingTips: '数据正在分析中...',
+			cycleNumber: 0,
 			uid: '',
-			token: '',
+			token: '' || localStorage.getItem('token'),
 			userInfo: {
 				joinDay: ''
 			},
@@ -142,6 +144,9 @@ window.onload = function () {
 						type: 'scroll',
 						orient: 'vertical',
 						data: obj.data,
+						pageTextStyle: {
+							color: '#ffffff'
+						},
 						formatter: function (name) {
 							let count = 0
 							for (let j of obj.data){
@@ -186,16 +191,45 @@ window.onload = function () {
 				let url = type==='follower'?'/api/getUserFlower':'/api/getUserFlowees'
 				axios.post(url,data).then(res => {
 					if(res.data.code === 200){
-						setTimeout(function () {
-							_this.loading = false
-							_this.hasAuth = true
+						localStorage.setItem('token', _this.token)
+						if(res.data.data==='success'){
 							_this.getUserInfo()
 							_this.getAnalyzeData()
-						},3000)
+							_this.hasAuth = true
+							_this.loading = false
+						}else {
+							_this.getSpiderStatus()
+						}
 					}else {
 						alert(res.data.msg)
 						_this.hasAuth = false
 						_this.loading = false
+					}
+				})
+			},
+			getSpiderStatus() {
+				let _this = this
+				let data = {
+					uid: _this.uid,
+					type: _this.type
+				}
+				axios.post('/api/getSpiderStatus', data).then(res=>{
+					if(res.data.data){
+							_this.loading = false
+							_this.hasAuth = true
+							_this.getUserInfo()
+							_this.getAnalyzeData()
+							_this.cycleNumber = 0
+					}else {
+						setTimeout(function () {
+							_this.cycleNumber = _this.cycleNumber+1
+							if(_this.cycleNumber >= 2&&_this.cycleNumber<4 ){
+								_this.loadingTips = '看起来你的人缘很好，数据太多了，正在努力分析中..'
+							}else if(_this.cycleNumber >= 4){
+								_this.loadingTips = '你的人缘爆棚啊！服务器全力分析中，您耐心等待一下..'
+							}
+							_this.getSpiderStatus()
+						},10000)
 					}
 				})
 			},
@@ -232,6 +266,9 @@ window.onload = function () {
 						alert(res.data.msg)
 					}
 				})
+			},
+			backLogin () {
+				this.hasAuth = false
 			},
 			getJoinDay(time) {
 				var s1 = time

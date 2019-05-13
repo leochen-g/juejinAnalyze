@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const db_url = 'mongodb://localhost:27017/juejinAnalyze'
-let db = mongoose.connect(db_url, { useNewUrlParser: true ,useCreateIndex:true})
+mongoose.connect(db_url, { useNewUrlParser: true ,useCreateIndex:true})
 
 //连接成功
 mongoose.connection.on('connect', () => {
