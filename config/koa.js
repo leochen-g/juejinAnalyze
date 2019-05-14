@@ -69,7 +69,7 @@ app.on('error', (err) => {
 
 app.use(router.routes())
 app.use(router.allowedMethods())
-app.listen(3008, () => {
+app.listen(9080, () => {
 	console.log('juejinAnalyze is starting at port 3008')
 	console.log('please  Preview at  http://localhost:3008')
 })
