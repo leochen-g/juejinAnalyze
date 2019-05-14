@@ -60,7 +60,7 @@ async function spiderUserInfoAndInsert(ids, token, tid, type) {
 		}
 		return 'ok'
 	} catch (e) {
-		console.log('错误了', e)
+		console.log('用户信息获取失败',ids, e,)
 	}
 }
 
@@ -101,7 +101,7 @@ async function getFollower(uid, token, before) {
 		followList.forEach(async function (item) { // 循环获取关注者的信息
 			await spiderUserInfoAndInsert(item.follower.objectId, token, uid, 'follower')
 		})
-		if (followList.length === 20) {  // 获取的数据长度为20继续爬取
+		if (followList&&followList.length === 20) {  // 获取的数据长度为20继续爬取
 			let lastTime = getLastTime(followList)
 			await updateSpider(uid, 'followerSpider', 'loading') // 更新爬取状态为loading
 			await getFollower(uid, token, lastTime)
@@ -110,6 +110,7 @@ async function getFollower(uid, token, before) {
 			await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
 		}
 	} catch (err) {
+		console.log('获取粉丝列表失败',err)
 		return {data: err}
 	}
 }
@@ -151,6 +152,7 @@ async function getFollowee(uid, token, before) {
 			await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
 		}
 	} catch (err) {
+		console.log('获取关注者列表失败',err)
 		return {data: err}
 	}
 }

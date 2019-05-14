@@ -222,6 +222,7 @@ window.onload = function () {
 							_this.getUserInfo()
 							_this.getAnalyzeData()
 							_this.cycleNumber = 0
+						_this.loadingTips = '数据正在分析中...'
 					}else {
 						setTimeout(function () {
 							_this.cycleNumber = _this.cycleNumber+1
