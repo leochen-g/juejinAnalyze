@@ -8,7 +8,7 @@
       "error_file": "./log/app-err.log",
       "out_file": "./log/app-out.log",
       "pid_file": "./log/node.pid",
-      "instances": 3,
+      "instances": 1,
       "min_uptime": "60s",
       "max_restarts": 30,
       "watch": false
