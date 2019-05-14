@@ -7,10 +7,18 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon16.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon32.ico">
     <link rel="stylesheet" href="./css/index.css">
+    <style>
+        [v-cloak] {display: none}
+    </style>
 </head>
 <body style="overflow: hidden">
-<div id="main" ref="main" :style="{transform: transForm}">
-
+<div id="main" ref="main" :style="{transform: transForm}"  v-cloak>
+    <div class="person-info">
+        <div class="person-info-item"><a href="http://www.xkboke.com" title="博客" target="_blank">博客</a></div>
+        <div class="person-info-item"><a href="https://github.com/gengchen528/juejinAnalyze" title="github" target="_blank"><img src="./img/github.svg" alt=""></a></div>
+        <div class="person-info-item"><a href="https://juejin.im/user/5878acc28d6d810058b6dcaf/posts" title="掘金主页" target="_blank"><img src="https://b-gold-cdn.xitu.io/v3/static/img/simplify-logo.3e3c253.svg" alt=""></a></div>
+    </div>
+    <span class="github"><a href=""></a></span>
     <!--登录页面-->
     <div v-show="!hasAuth" class="login">
         <div class="login-form">
@@ -19,6 +27,7 @@
             <div style="border-color: #3381ff" class="angle angle-right-top"></div>
             <div style="border-color: #3381ff" class="angle angle-right-bottom"></div>
             <div style="border-color: #3381ff" class="angle angle-left-bottom"></div>
+            <div class="login-title">掘金粉丝及关注者数据分析</div>
             <div class="login-item">
                 <label for=""><span>uid</span><input v-model="uid" class="login-input" type="text"></label>
             </div>
@@ -176,10 +185,9 @@
         <div class="footer"></div>
     </div>
 </div>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./js/Vue.min.js"></script>
+<script src="./js/echarts.min.js" type="text/javascript"></script>
+<script src="./js/axios.min.js"></script>
 <script src="./js/index.js" type="text/javascript"></script>
 </body>
 </html>

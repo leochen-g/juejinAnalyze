@@ -7,7 +7,6 @@ module.exports = {
 				JueJinSearch.findOne({uid: conditions.uid}, (err, doc) => {
 					if (err) return reject(err)
 					if (doc){
-						console.log('doc',doc)
 						return resolve(doc)
 					}else {
 						let data = {
@@ -30,7 +29,6 @@ module.exports = {
 			return new Promise((resolve, reject) => {
 				let set = {}
 				set[conditions.key] = conditions.value
-				console.log('更新值', set)
 				JueJinSearch.updateOne({uid: conditions.uid}, {'$set': set}, (err, doc) => {
 					if (err) return reject(err)
 					return resolve(doc)

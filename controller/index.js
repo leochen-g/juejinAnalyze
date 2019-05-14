@@ -101,7 +101,6 @@ async function getFollower(uid, token, before) {
 		followList.forEach(async function (item) { // 循环获取关注者的信息
 			await spiderUserInfoAndInsert(item.follower.objectId, token, uid, 'follower')
 		})
-		console.log(followList.length)
 		if (followList.length === 20) {  // 获取的数据长度为20继续爬取
 			let lastTime = getLastTime(followList)
 			await updateSpider(uid, 'followerSpider', 'loading') // 更新爬取状态为loading
@@ -191,7 +190,6 @@ module.exports = {
 		let uid = body.uid
 		let token = body.token
 		let searchStatus = await model.search.findOrInsert({uid: uid})
-		console.log(' searchStatus', searchStatus)
 		if (searchStatus.followerSpider == 'success') {
 			return {data: 'success'}
 		} else if (searchStatus.followerSpider == 'loading') {

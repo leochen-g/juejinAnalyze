@@ -198,7 +198,9 @@ window.onload = function () {
 							_this.hasAuth = true
 							_this.loading = false
 						}else {
-							_this.getSpiderStatus()
+							setTimeout(function () {
+								_this.getSpiderStatus()
+							}, 5000)
 						}
 					}else {
 						alert(res.data.msg)
@@ -223,10 +225,14 @@ window.onload = function () {
 					}else {
 						setTimeout(function () {
 							_this.cycleNumber = _this.cycleNumber+1
-							if(_this.cycleNumber >= 2&&_this.cycleNumber<4 ){
+							if(_this.cycleNumber >= 3&&_this.cycleNumber<5 ){
 								_this.loadingTips = '看起来你的人缘很好，数据太多了，正在努力分析中..'
-							}else if(_this.cycleNumber >= 4){
+							}else if(_this.cycleNumber >= 5&&_this.cycleNumber<8){
 								_this.loadingTips = '你的人缘爆棚啊！服务器全力分析中，您耐心等待一下..'
+							}else if(_this.cycleNumber >= 8&&_this.cycleNumber<15){
+								_this.loadingTips = '大佬驾到！服务器马力加大，请您先喝杯茶再来看看..'
+							}else if(_this.cycleNumber >= 15){
+								_this.loadingTips = '不用说了，你是不是掘金内部小编...'
 							}
 							_this.getSpiderStatus()
 						},10000)

@@ -61,9 +61,17 @@ body
     justify-content: center;
     align-items: center;
 }
+.login-title{
+    position: absolute;
+    font-size: 26px;
+    font-weight: bold;
+    left: 200px;
+    top: -100px
+}
 .login-form{
     width: 670px;
     height: 320px;
+    margin: 0 auto;
     position: relative;
 }
 .login-item{
@@ -413,4 +421,24 @@ body
     top: 169px;
     right: 270px;
     z-index: 4;
+}
+.person-info{
+    z-index: 12;
+    position: absolute;
+    right: 40px;
+    height: 30px;
+    top: 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.person-info-item a{
+    color: #0750fe;
+    font-size: 20px;
+    text-decoration: none;
+}
+.person-info-item img{
+    margin-left: 15px;
+    width: 30px;
+    height: 30px;
 }
