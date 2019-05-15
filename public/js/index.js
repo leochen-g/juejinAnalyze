@@ -232,7 +232,7 @@ window.onload = function () {
 								_this.loadingTips = '你的人缘爆棚啊！服务器全力分析中，您耐心等待一下..'
 							}else if(_this.cycleNumber >= 8&&_this.cycleNumber<15){
 								_this.loadingTips = '大佬驾到！服务器马力加大，请您先喝杯茶再来看看..'
-							}else if(_this.cycleNumber >= 15){
+							}else if(_this.cycleNumber >= 20){
 								_this.loadingTips = '不用说了，你是不是掘金内部小编...'
 							}
 							_this.getSpiderStatus()

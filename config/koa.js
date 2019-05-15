@@ -54,8 +54,8 @@ const handler = async(ctx, next) => {
 	try {
 		await next();
 	} catch (err) {
-		console.log(err)
-		ctx.respose.status = err.statusCode || err.status || 500;
+		console.log('服务器错误',err)
+		ctx.respose.status = 500;
 		ctx.response.type = 'html';
 		ctx.response.body = '<p>出错啦</p>';
 		ctx.app.emit('error', err, ctx);
