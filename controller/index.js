@@ -107,9 +107,9 @@ async function getFollower(uid, token, before) {
 			await getFollower(uid, token, lastTime)
 		} else {
 			await updateSpider(uid, 'follower', true) // 设置已经爬取标志
-			console.log('爬取完成')
 			setTimeout(async function () {
-				await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
+				let result = await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
+				console.log('爬取完成', result)
 			}, 2000)
 			
 		}
@@ -153,9 +153,9 @@ async function getFollowee(uid, token, before) {
 			await getFollowee(uid, token, lastTime)
 		} else {
 			await updateSpider(uid, 'followees', true) // 设置已经爬取标志
-			console.log('爬取完成')
 			setTimeout(async function() {
-				await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
+				let result = await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
+				console.log('爬取完成',result)
 			},2000)
 			
 		}
