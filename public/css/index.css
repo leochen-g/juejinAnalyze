@@ -54,7 +54,7 @@ body
     background-size: 100% 100%;
 }
 .login{
-    background: url("../img/login-background.png") no-repeat scroll;
+    background: url("http://image.bloggeng.com/juejin_analyze_login-background.png") no-repeat scroll;
     height:768px;
     overflow: hidden;
     display: flex;
@@ -131,7 +131,7 @@ body
     height: 100px;
 }
 .main{
-    background: url("../img/background.png") no-repeat scroll;
+    background: url("http://image.bloggeng.com/juejin_analyze_background.png") no-repeat scroll;
     width: 1366px;
     height: 768px;
     overflow: hidden;
