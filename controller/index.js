@@ -107,7 +107,11 @@ async function getFollower(uid, token, before) {
 			await getFollower(uid, token, lastTime)
 		} else {
 			await updateSpider(uid, 'follower', true) // 设置已经爬取标志
-			await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
+			console.log('爬取完成')
+			setTimeout(async function () {
+				await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
+			}, 2000)
+			
 		}
 	} catch (err) {
 		console.log('获取粉丝列表失败',err)
@@ -149,7 +153,11 @@ async function getFollowee(uid, token, before) {
 			await getFollowee(uid, token, lastTime)
 		} else {
 			await updateSpider(uid, 'followees', true) // 设置已经爬取标志
-			await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
+			console.log('爬取完成')
+			setTimeout(async function() {
+				await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
+			},2000)
+			
 		}
 	} catch (err) {
 		console.log('获取关注者列表失败',err)
