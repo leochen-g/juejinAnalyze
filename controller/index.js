@@ -103,13 +103,12 @@ async function getFollower(uid, token, before) {
 		})
 		if (followList&&followList.length === 20) {  // 获取的数据长度为20继续爬取
 			let lastTime = getLastTime(followList)
-			await updateSpider(uid, 'followerSpider', 'loading') // 更新爬取状态为loading
 			await getFollower(uid, token, lastTime)
 		} else {
 			await updateSpider(uid, 'follower', true) // 设置已经爬取标志
 			setTimeout(async function () {
 				let result = await updateSpider(uid, 'followerSpider', 'success') // 更新爬取状态为success
-				console.log('爬取完成', result)
+				console.log('爬取粉丝完成', result)
 			}, 2000)
 			
 		}
@@ -149,13 +148,12 @@ async function getFollowee(uid, token, before) {
 		})
 		if (followList.length === 20) {
 			let lastTime = getLastTime(followList)
-			await updateSpider(uid, 'followeesSpider', 'loading') // 更新爬取状态为loading
 			await getFollowee(uid, token, lastTime)
 		} else {
 			await updateSpider(uid, 'followees', true) // 设置已经爬取标志
 			setTimeout(async function() {
 				let result = await updateSpider(uid, 'followeesSpider', 'success') // 更新爬取状态为loading
-				console.log('爬取完成',result)
+				console.log('爬取关注的人完成',result)
 			},2000)
 			
 		}
@@ -205,6 +203,7 @@ module.exports = {
 		} else if (searchStatus.followerSpider == 'loading') {
 			return {data: 'loading'}
 		} else if (searchStatus.followerSpider == 'none') {
+			await updateSpider(uid, 'followerSpider', 'loading') // 更新爬取状态为loading
 			spiderUserInfoAndInsert(uid, token, uid) // 把自己的信息也插入mongodb
 			getFollower(uid, token)
 			return {data: 'none'}
@@ -219,6 +218,7 @@ module.exports = {
 		} else if (searchStatus.followeesSpider == 'loading') {
 			return {data: 'loading'}
 		} else if (searchStatus.followeesSpider == 'none') {
+			await updateSpider(uid, 'followeesSpider', 'loading') // 更新爬取状态为loading
 			spiderUserInfoAndInsert(uid, token, uid) // 把自己的信息也插入mongodb
 			getFollowee(uid, token)
 			return {data: 'none'}
