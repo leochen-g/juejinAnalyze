@@ -185,9 +185,6 @@ window.onload = function () {
 				}else if(!reg.test(_this.uid)||_this.uid.length<20){
 					alert('请输入正确的用户ID，可在掘金->我的主页->浏览器地址栏看到')
 					return false
-				}else if(!reg.test(_this.token)||_this.uid.length<20){
-					alert('请输入正确的token，可点击右上角掘金logo查看token获取方式')
-					return false
 				}
 				_this.loading = true
 				_this.type = type
