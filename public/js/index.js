@@ -17,7 +17,8 @@ window.onload = function () {
 			mainWidth: '',
 			mainHeight: '',
 			type: '',
-			analyzeData: ''
+			analyzeData: '',
+			timer: false
 		},
 		computed: {
 			transForm: function () {
@@ -49,6 +50,7 @@ window.onload = function () {
 					let that = this
 					setTimeout(function () {
 						that.timer = false
+						console.log('223')
 					}, 400)
 				}
 			},
