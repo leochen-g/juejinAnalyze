@@ -69,7 +69,7 @@ app.on('error', (err) => {
 
 app.use(router.routes())
 app.use(router.allowedMethods())
-app.listen(9080, () => {
-	console.log('juejinAnalyze is starting at port 9080')
-	console.log('please  Preview at  http://localhost:9080')
+app.listen(9081, () => {
+	console.log('juejinAnalyze is starting at port 9081')
+	console.log('please  Preview at  http://localhost:9081')
 })
