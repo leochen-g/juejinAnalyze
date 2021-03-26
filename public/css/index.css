@@ -75,14 +75,14 @@ body
     position: relative;
 }
 .login-item{
-    width: 476px;
+    width: 490px;
     margin: 30px auto;
 }
 .login-item span{
     display: inline-block;
     font-size: 24px;
     color: #1c6bfd;
-    width: 100px;
+    width: 120px;
 }
 .login-btn{
     width: 476px;

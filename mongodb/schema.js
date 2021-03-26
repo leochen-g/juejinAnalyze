@@ -13,7 +13,6 @@ let jueJinUser = new Schema({
 	juejinPower: Number, // 掘力值
 	postedPostsCount: Number, // 发布文章数
 	totalCollectionsCount: Number, // 获得点赞数
-	totalCommentsCount: Number, // 获得评论总数
 	totalViewsCount: Number, // 文章被阅读数
 	
 	subscribedTagsCount: Number, // 关注标签数
@@ -23,8 +22,7 @@ let jueJinUser = new Schema({
 	collectedEntriesCount: Number, // 点赞的文章数
 	pinCount: Number, // 发布沸点数
 	
-	postedEntriesCount: Number, // 分享文章数
-	
+
 	purchasedBookletCount: Number, // 购买小册数
 	bookletCount: Number, // 撰写小册数
 	
@@ -33,8 +31,8 @@ let jueJinUser = new Schema({
 	
 	level: Number, // 等级
 	
-	topicCommentCount: Number, // 话题被评论数
-	viewedEntriesCount: Number, // 猜测是主页浏览数
+	commentCount: Number, // 评论数
+	viewedArticleCount: Number, // 浏览文章数
 	
 	followees: {type:Array,default: []}, // 存放你关注的列表
 	follower: {type:Array,default: []} // 存放关注你的列表

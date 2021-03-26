@@ -2,7 +2,15 @@
   "name": "juejinanalyze",
   "version": "1.0.0",
   "description": "用户掘金粉丝及关注用户数据多维度分析工具",
-  "keywords": ["koa", "mongodb", "superagent", "mongoose", "掘金", "爬虫", "数据分析"],
+  "keywords": [
+    "koa",
+    "mongodb",
+    "superagent",
+    "mongoose",
+    "掘金",
+    "爬虫",
+    "数据分析"
+  ],
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",

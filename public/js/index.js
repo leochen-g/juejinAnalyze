@@ -180,11 +180,11 @@ window.onload = function () {
 			},
 			spiderFollower(type) {
 				let _this = this
-				let reg = /^[0-9a-zA-Z]+$/
+				let reg = /^[0-9]+$/
 				if(!_this.uid || !_this.token){
 					alert('请输入uid和token值')
 					return false
-				}else if(!reg.test(_this.uid)||_this.uid.length<20){
+				}else if(!reg.test(_this.uid)||_this.uid.length<15){
 					alert('请输入正确的用户ID，可在掘金->我的主页->浏览器地址栏看到')
 					return false
 				}
