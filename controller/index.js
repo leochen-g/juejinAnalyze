@@ -25,7 +25,7 @@ async function spiderUserInfoAndInsert(ids, token, tid, type) {
             avatarLarge: userInfo.avatar_large,
             jobTitle: userInfo.job_title,
             company: userInfo.company,
-            createdAt: userInfo.register_time,
+            createdAt: parseInt(`${userInfo.register_time}000`),
             rankIndex: userInfo.rank_index, // 排名，级别
             juejinPower: userInfo.power, // 掘力值
             postedPostsCount: userInfo.post_article_count, // 发布文章数
