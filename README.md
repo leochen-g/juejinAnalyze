@@ -8,6 +8,10 @@
 * 个人成就面板
 * 更多分析功能后续开发中...（期待你的建议）
 
+## 在线版体验
+
+[http://juejinfan.xkboke.com/](http://juejinfan.xkboke.com/)
+
 ## 截图
 ![](https://user-gold-cdn.xitu.io/2019/5/15/16aba7a3d58c59bc?w=2558&h=1376&f=png&s=1916755)
 
