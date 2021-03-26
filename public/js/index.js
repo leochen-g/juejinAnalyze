@@ -284,9 +284,6 @@ window.onload = function () {
 				this.hasAuth = false
 			},
 			getJoinDay(time) {
-				if(time.length === 10) {
-					time = time + '000'
-				}
 				var s1 = time
 				s1 = new Date(s1);
 				s2 = new Date();//当前日期：2017-04-24
