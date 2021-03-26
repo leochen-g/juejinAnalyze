@@ -16,7 +16,6 @@ async function spiderUserInfoAndInsert(ids, token, tid, type) {
         user_id: ids
     }
     try {
-        console.log(ids)
         let data = await request({url, method: 'GET', params, cookies: `sessionid=${token}`})
         let json = JSON.parse(data.text)
         let userInfo = json.data
