@@ -7,6 +7,10 @@ function getLastTime(arr) {
     return obj.createdAtString
 }
 
+async function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 // 爬取用户信息并插入到mongodb
 // @ids 用户id  @token token @tid 关注者用户id
 async function spiderUserInfoAndInsert(ids, token, tid, type) {
@@ -93,10 +97,11 @@ async function getFollower(uid, token, cursor = 0) {
         let data = await request({url, method: 'GET', params, cookies: `sessionid=${token}`})
         let json = JSON.parse(data.text)
         let followList = json.data.data
-        followList.forEach(async function (item) { // 循环获取关注者的信息
+        for (let i = 0; i < followList.length; i++) {
+            const item = followList[i]
             await spiderUserInfoAndInsert(item.user_id, token, uid, 'follower')
-        })
-        console.log(followList.length)
+            await delay(200)
+        }
         if (followList && followList.length === 99) {  // 获取的数据长度为20继续爬取
             await getFollower(uid, token, cursor + 99)
         } else {
@@ -126,7 +131,7 @@ async function updateSpider(uid, key, value) {
 
 // 爬取你关注的列表
 // @uid 用户的id @token token @cursor 分页开始
-async function getFollowee(uid, token, cursor =0 ) {
+async function getFollowee(uid, token, cursor = 0) {
     let params = {
         user_id: uid,
         cursor,
@@ -134,12 +139,14 @@ async function getFollowee(uid, token, cursor =0 ) {
     }
     try {
         let url = constant.get_followee_list
-        let data = await request({ url, method:'GET', params, cookies: `sessionid=${token}`})
+        let data = await request({url, method: 'GET', params, cookies: `sessionid=${token}`})
         let json = JSON.parse(data.text)
         let followList = json.data.data
-        followList.forEach(async function (item) { // 循环获取关注者的信息
+        for (let i = 0; i < followList.length; i++) {
+            const item = followList[i]
             await spiderUserInfoAndInsert(item.user_id, token, uid, 'followees')
-        })
+            await delay(200)
+        }
         if (followList.length === 99) {
             await getFollowee(uid, token, cursor + 99)
         } else {
