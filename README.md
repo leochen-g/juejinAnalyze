@@ -10,6 +10,11 @@
 
 ## 在线版体验
 
+> uid:  浏览器地址可查看用户id
+> 
+>sessionid: 登录后F12打开控制台，查看接口请求的cookie中有sessionid
+
+
 [http://juejinfan.xkboke.com/](http://juejinfan.xkboke.com/)
 
 ## 截图
